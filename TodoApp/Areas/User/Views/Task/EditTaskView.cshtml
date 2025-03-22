@@ -1,0 +1,62 @@
+﻿@model TaskItem
+
+<div class="bg-light p-4 mt-4 rounded shadow">
+    <h3 class="text-center mb-4">Edit Task</h3>
+
+    <!-- Edit Task Form -->
+    <form id="taskForm" action="/User/Task/SaveEditedData" method="post">
+        <input type="hidden" name="Id" value="@Model.Id">
+
+        <div class="mb-3">
+            <label for="taskTitle" class="form-label">Title</label>
+            <input type="text" id="taskTitle" name="Title" class="form-control" placeholder="Enter task title..." value="@Model.Title">
+        </div>
+
+        <div class="mb-3">
+            <label for="taskDescription" class="form-label">Description</label>
+            <textarea id="taskDescription" name="Description" class="form-control" rows="3" placeholder="Enter task description...">@Model.Description</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="taskDeadline" class="form-label">Deadline</label>
+            <input type="date" id="taskDeadline" name="Deadline" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="priority" class="form-label">Priority</label>
+            <select id="priority" name="Priority" class="form-select">
+                <option value="">Select Priority</option>
+                <option value="low">🟢 Low</option>
+                <option value="medium">🟡 Medium</option>
+                <option value="high">🔴 High</option>
+                <option value="urgent">🔥 Urgent</option>
+            </select>
+        </div>
+
+        <!-- Edit and Save Buttons -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary w-100 mt-3">💾 Save</button>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript Validation -->
+<script>
+    document.getElementById("taskForm").addEventListener("submit", function(event) {
+        let title = document.getElementById("taskTitle").value.trim();
+        let description = document.getElementById("taskDescription").value.trim();
+        let deadline = document.getElementById("taskDeadline").value.trim();
+        let priority = document.getElementById("priority").value.trim();
+
+        if (!title || !description || !deadline || !priority) {
+            event.preventDefault(); // Prevent form submission
+
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "All fields are required!",
+                footer: '<a href="#">Please fill in all fields before submitting.</a>'
+            });
+        }
+    });
+</script>

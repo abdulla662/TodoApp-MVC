@@ -1,0 +1,60 @@
+﻿ <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="bg-main text-white text-center p-4 mt-3">
+            <h1>🚀 Creative To-Do App</h1>
+        </div>
+
+        <div class="bg-light p-4 mt-4 rounded shadow">
+            <h3 class="text-center mb-4">Add New Task</h3>
+<form id="taskForm" method="post" action="/User/Task/SaveTaskData">   
+    <div class="mb-3">
+        <label for="taskTitle" class="form-label">Title</label>
+        <input type="text" id="taskTitle" name="Title" class="form-control" placeholder="Enter task title...">
+    </div>
+    <div class="mb-3">
+        <label for="taskDescription" class="form-label">Description</label>
+        <textarea id="taskDescription" name="Description" class="form-control" rows="3" placeholder="Enter task description..."></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="taskDeadline" class="form-label">Deadline</label>
+        <input type="date" id="taskDeadline" name="Deadline" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="priority" class="form-label">Priority</label>
+        <select id="priority" name="Priority" class="form-select">
+            <option value="">Select Priority</option>
+            <option value="low">🟢 Low</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="high">🔴 High</option>
+            <option value="urgent">🔥 Urgent</option>
+        </select>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary w-100">Add Task</button>
+    </div>
+</form>
+
+   <a href="/User/Task/index" class="btn btn-success w-100 mt-3">Go to Tasks Page</a>
+        </div>
+    </div>
+@section scripts{
+    <script>
+        document.getElementById("taskForm").addEventListener("submit", function(event) {
+            let title = document.getElementById("taskTitle").value.trim();
+            let description = document.getElementById("taskDescription").value.trim();
+            let deadline = document.getElementById("taskDeadline").value.trim();
+            let priority = document.getElementById("priority").value.trim();
+
+            if (!title || !description || !deadline || !priority) {
+                event.preventDefault(); 
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "All fields are required!",
+                });
+            }
+        });
+    </script>
+
+}

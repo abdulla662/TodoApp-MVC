@@ -1,0 +1,91 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <div class="card-body">
+            <h2 class="text-center text-primary">Create a New Account</h2>
+            <p class="text-muted text-center">Please fill in the details below</p>
+            <hr />
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Name" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Name"><i class="bi bi-envelope"></i> Please Enter Your Name</label>
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email"><i class="bi bi-envelope"></i> Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password"><i class="bi bi-lock"></i> Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.ConfirmPassword"><i class="bi bi-check-circle"></i> Confirm Password</label>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Adress" class="form-control" aria-required="true" placeholder="Address" />
+                    <label asp-for="Input.Adress"><i class="bi bi-geo-alt"></i> Enter Your Address</label>
+                    <span asp-validation-for="Input.Adress" class="text-danger"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">
+                    <i class="bi bi-person-plus"></i> Register
+                </button>
+            </form>
+
+            <hr />
+
+            <h5 class="text-center mt-3">Or register using:</h5>
+            <div class="d-flex justify-content-center mt-3">
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <p class="text-muted text-center">
+                            No external authentication services configured. <br />
+                            <a href="https://go.microsoft.com/fwlink/?LinkID=532715" target="_blank">
+                                Learn more
+                            </a>
+                        </p>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-light w-100 d-flex align-items-center justify-content-center border border-secondary shadow-sm" name="provider" value="@provider.Name" title="Log in using @provider.DisplayName">
+                                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" class="me-2" style="width: 20px; height: 20px;">
+                                    <span style="font-weight: bold; color: #757575;">Continue with Google</span>
+                                </button>
+                            }
+                        </form>
+                    }
+                }
+            </div>
+
+            <hr />
+
+            <p class="text-center mt-3">
+                Already have an account? <a asp-page="./Login" class="text-primary">Log in</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

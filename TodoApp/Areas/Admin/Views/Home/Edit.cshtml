@@ -1,0 +1,39 @@
+﻿@model TodoApp.Models.ViewModel.EditUserViewModel
+<div class="container my-3">
+    <div class="row my-3">
+        <!-- Title and Create New Button on the Same Line -->
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 class="mb-0">Edit User</h2>
+        </div>
+        <form method="post" asp-action="SaveEdit" asp-area="Admin" asp-route-Id="@Model.Id">
+
+
+            <div class="form-group mb-3">
+                <label for="Name">Name</label>
+                <input type="Name" class="form-control mt-2" id="Name" name="Name" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="address">Address</label>
+                <input type="text" class="form-control mt-2" id="address" name="Address">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="role">Role</label>
+                <select class="form-control mt-2" id="role" name="Role">
+                    @foreach (var role in Model.AllRoles)
+                    {
+                        <option>@role</option>
+                    }
+
+
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+
+ 

@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]TodoApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TodoApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/Home/index">🚀To-Do App</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                @if (User.IsInRole("Super Admin") || User.IsInRole("Admin"))
+                {
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/home/index">👤 User Management</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-link nav-link">🚪 Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                {
+
+                }
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                      
+                        <li class="nav-item">
+                            <button onclick="toggleDarkMode()" class="btn btn-outline-light">🌙 Toggle Dark Mode</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer Section -->
+    <!-- Footer Section -->
+    <footer class="border-top footer bg-dark text-white py-0 mt-5">
+        <div class="container text-center py-0">
+            <p class="mb-0" style="font-size: 16px;">
+                2025 - TodoApp</a>
+            </p>
+            <p style="font-size: 16px; margin-bottom: 5px;">
+                Made with ❤️ by <strong>Abdulla Hamdy</strong>
+            </p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+        @* <--li class="nav-item"-->
+             <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+         </--li>
+         <li class="nav-item">
+             <a class="nav-link" href="@Url.Action("Index", "Tasks")">Tasks</a>
+         </li>
+         *@

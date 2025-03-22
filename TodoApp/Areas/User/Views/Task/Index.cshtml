@@ -1,0 +1,164 @@
+﻿@model IEnumerable<TaskItem>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Dragula CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.css">
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">📋 Task List</h2>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="/User/Home/Index" class="btn btn-success">➕ Create New Task</a>
+            <form method="get" action="/user/Task/search">
+                <input type="text" name="keyword" id="searchBox" class="form-control w-100" placeholder="🔍 Search Tasks...">
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-striped shadow rounded">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                        <th>Deadline</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
+                        <th class="text-center">Done</th>
+                        <th class="text-center">Download</th>
+
+                    </tr>
+                </thead>
+                <tbody id="taskTable">
+                    @foreach (var item in Model)
+                    {
+                        <tr data-id="@item.Id">
+                            <td>@item.Title</td>
+                            <td>@item.Description</td>
+                            <td>@item.CreatedAt</td>
+                            <td>@item.Deadline</td>
+
+                            <td>
+                                @if (item.Priority?.ToLower() == "low")
+                                {
+                                    <span class="badge bg-success">Low</span>
+                                }
+                                else if (item.Priority?.ToLower() == "medium")
+                                {
+                                    <span class="badge bg-warning">Medium</span>
+                                }
+                                else if (item.Priority?.ToLower() == "high")
+                                {
+                                    <span class="badge bg-danger">High</span>
+                                }
+                                else if (item.Priority?.ToLower() == "urgent")
+                                {
+                                    <span class="badge bg-danger">Urgent</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (item.Status == true)
+                                {
+                                    <span class="badge bg-success">Done</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pending</span>
+                                }
+                            </td>
+                       
+
+                            <td class="text-center">
+                                <a href="/User/Task/EditTaskView?TaskId=@item.Id" class="btn btn-warning btn-sm d-inline-block">✏ Edit</a>
+
+                                <form id="deleteForm-@item.Id" action="/User/Task/Delete" method="post" class="d-inline-block">
+                                    <input type="hidden" name="TaskId" value="@item.Id" />
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(@item.Id)">🗑 Delete</button>
+                                </form>
+                            </td>
+
+                            <td class="text-center">
+                                <form method="post" action="/User/Task/MarkCompleted">
+                                    <input type="hidden" name="TaskID" value="@item.Id" />
+
+                                    @if (item.Status == true)
+                                    {
+                                        <button type="submit" class="btn btn-primary btn-sm">✅ Done</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-secondary btn-sm">⏳ Pending</button>
+                                    }
+                            <td>
+                                <a href="/User/Task/DownloadPdf?id=@item.Id" class="btn btn-primary">Download PDF</a>
+
+                            </td>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script>
+        function confirmDelete(taskId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This task will be permanently deleted!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("deleteForm-" + taskId).submit();
+                }
+            });
+        }
+
+        // ✅ Enable Drag & Drop Using Dragula
+        document.addEventListener("DOMContentLoaded", function () {
+            var tableBody = document.getElementById("taskTable");
+
+            dragula([tableBody]).on('drop', function (el, target, source, sibling) {
+                let taskIds = [];
+                document.querySelectorAll("#taskTable tr").forEach(row => {
+                    taskIds.push(row.getAttribute("data-id"));
+                });
+
+                // ✅ Send new order to the backend
+                fetch("/Task/ReorderTasks", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ taskIds: taskIds })
+                }).then(response => response.json())
+                .then(data => console.log("Reorder successful:", data))
+                .catch(error => console.error("Error reordering tasks:", error));
+            });
+        });
+    </script>
+
+</body>
+</html>

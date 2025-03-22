@@ -1,0 +1,29 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Dark Mode */
+.dark-mode {
+    background-color: #343a40 !important;
+    color: white !important;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Header Styling */
+.bg-main {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Dark Mode Button */
+.btn-outline-light {
+    border: 1px solid white;
+}

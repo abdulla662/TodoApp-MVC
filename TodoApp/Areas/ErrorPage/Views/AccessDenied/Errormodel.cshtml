@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Errormodel";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link rel="stylesheet" href="~/css/404.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .number {
+            font-size: 30vmin;
+            font-weight: 900;
+            letter-spacing: 5vmin;
+            color: #000;
+        }
+
+        .text {
+            font-size: 5vmin;
+            font-family: 'Courgette', cursive;
+        }
+
+            .text span {
+                font-size: 10vmin;
+            }
+
+        .me {
+            margin-top: 20px;
+            display: inline-block;
+            text-decoration: none;
+            background: #673ab7;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+            .me:hover {
+                background: #512da8;
+            }
+    </style>
+</head>
+<body>
+    <div class="number">404</div>
+    <div class="text">
+        <span>Ooops...</span><br>Page Not Found
+    </div>
+</body>
+</html>
